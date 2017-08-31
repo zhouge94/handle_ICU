@@ -1,4 +1,4 @@
---cpu Cortex-M4.fp
+--cpu=Cortex-M4.fp
 "handheld_v2.0\stm32f4xx_hal_i2c.o"
 "handheld_v2.0\stm32f4xx_hal_gpio.o"
 "handheld_v2.0\stm32f4xx_hal_pwr_ex.o"
@@ -48,9 +48,10 @@
 "handheld_v2.0\fatfs.o"
 "handheld_v2.0\bsp_driver_sd.o"
 "handheld_v2.0\datascope_dp.o"
-"handheld_v2.0\my_uart.o"
 "handheld_v2.0\sys.o"
+"handheld_v2.0\my_uart.o"
 "handheld_v2.0\sdcard.o"
+"handheld_v2.0\key.o"
 "handheld_v2.0\system_stm32f4xx.o"
 "handheld_v2.0\sd_diskio.o"
 "handheld_v2.0\syscall.o"
@@ -58,7 +59,6 @@
 "handheld_v2.0\ff.o"
 "handheld_v2.0\ff_gen_drv.o"
 --library_type=microlib --strict --scatter "Handheld_v2.0\Handheld_v2.sct"
-
---diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--diag_suppress=L6329 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "Handheld_v2.map" -o Handheld_v2.0\Handheld_v2.0

@@ -53,22 +53,27 @@
 
 /* USER CODE BEGIN Includes */     
 #include "sys.h"
+#include "SDCard.h"
 /* USER CODE END Includes */
 
 /* Variables -----------------------------------------------------------------*/
 osThreadId defaultTaskHandle;
+osTimerId sender_TimerHandle;
 
 /* USER CODE BEGIN Variables */
+osThreadId keyTaskHandle;
 
 /* USER CODE END Variables */
 
 /* Function prototypes -------------------------------------------------------*/
 void StartDefaultTask(void const * argument);
+void Callback_sender_Timer(void const * argument);
 
 extern void MX_FATFS_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* USER CODE BEGIN FunctionPrototypes */
+void KeyTask(void const * argument);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -89,8 +94,15 @@ void MX_FREERTOS_Init(void) {
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
 
+  /* Create the timer(s) */
+  /* definition and creation of sender_Timer */
+  osTimerDef(sender_Timer, Callback_sender_Timer);
+  sender_TimerHandle = osTimerCreate(osTimer(sender_Timer), osTimerPeriodic, NULL);
+
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
+  osTimerStart(sender_TimerHandle,1);
+
   /* USER CODE END RTOS_TIMERS */
 
   /* Create the thread(s) */
@@ -99,6 +111,8 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
+  osThreadDef(keyTask, KeyTask, osPriorityNormal, 0, 1280);
+  keyTaskHandle = osThreadCreate(osThread(keyTask), NULL);
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
@@ -114,20 +128,89 @@ void StartDefaultTask(void const * argument)
   MX_FATFS_Init();
 
   /* USER CODE BEGIN StartDefaultTask */
-	uint32_t count;
-	Write_StartData_To_SDCard();
+  uint32_t count;
+  BELL_ON;
+  osDelay(100);
+  BELL_OFF;
+  sys_data_init();
+  Write_StartData_To_SDCard();
+  HAL_UART_Receive_IT(&huart1,(uint8_t *)&rx_buffer_1.s1,1);
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1); 
+  
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1000);
-		//printf("hello world[%d]",count++);
-		MyDEBUG("hello debug [%d]\r\n",count++);
+    while(sys.Get_Flat==0)
+    {
+      if(sys.key>0)
+      {
+        SendKey(0xfe,sys.key);
+        sys.key=0;          
+      }
+      osDelay(10);
+    }
+    if(sys.key>0)
+    {
+      SendKey(0xfe,sys.key);
+      sys.key=0;          
+    }
+    sys.Get_Flat=0;
+    Generate_Data(&Data_Pack,1,20,(unsigned char *)sys.ecg1buff);//ecg data
+    Generate_Data(&Data_Pack,2,20,(unsigned char *)sys.ecg2buff);
+    Generate_Data(&Data_Pack,3,20,(unsigned char *)sys.ecg3buff);
+    Generate_Data(&Data_Pack,4,8,(unsigned char *)sys.mpuAxbuff);//mpu data
+    Generate_Data(&Data_Pack,5,8,(unsigned char *)sys.mpuAybuff);
+    Generate_Data(&Data_Pack,6,8,(unsigned char *)sys.mpuAzbuff);
+    Generate_Data(&Data_Pack,7,4,(unsigned char *)&sys.ZuKang);//huxi data
+    SendPACK(0xff,Data_Pack.size,Data_Pack.buffer);
+    Data_Pack.size=0;
   }
   /* USER CODE END StartDefaultTask */
 }
 
+/* Callback_sender_Timer function */
+void Callback_sender_Timer(void const * argument)
+{
+  /* USER CODE BEGIN Callback_sender_Timer */
+    static int count=0,countmpu=0,countother=0,i;
+    static unsigned char temp=0,temp2=0;
+  //HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
+  switch(count++)
+  {
+    case 0:
+      break;
+    case 1:
+      count=0;
+      break;
+    default:break;
+  }
+  /* USER CODE END Callback_sender_Timer */
+}
+
 /* USER CODE BEGIN Application */
-     
+void KeyTask(void const * argument)
+{
+  /* init code for FATFS */
+  uint32_t count,key=0,key_new=0;
+
+  /* USER CODE BEGIN StartDefaultTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    key=GetPress();
+    if(key>0)
+    {
+     sys.key=key;
+      BELL_ON;
+      osDelay(50);
+      BELL_OFF;
+
+       
+    }
+    osDelay(20);
+  }
+  /* USER CODE END StartDefaultTask */
+}     
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

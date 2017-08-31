@@ -53,6 +53,8 @@ char SD_Path[4];  /* SD logical drive path */
 
 /* USER CODE BEGIN Variables */
 #include "sys.h"
+extern FATFS SDCard;
+
 /* USER CODE END Variables */    
 
 void MX_FATFS_Init(void) 

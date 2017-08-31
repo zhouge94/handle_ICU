@@ -1,11 +1,11 @@
 #ifndef __SDCard_H
-#define __SDCard_H	
+#define __SDCard_H
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal.h"
-#include "stm32f4xx_it.h"	 
+#include "stm32f4xx_it.h"
 #include "rtc.h"
 
-#include "stdio.h"	//这三个头文件用于支持浮点数转换为字符串功能
+#include "stdio.h"
 #include "string.h"
 #include "math.h"
 #include "fatfs.h"

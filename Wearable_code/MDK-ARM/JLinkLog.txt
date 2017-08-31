@@ -1,0 +1,41 @@
+T232C 004:372 SEGGER J-Link V6.16c Log File (0005ms, 0992ms total)
+T232C 004:372 DLL Compiled: Jun 16 2017 18:14:49 (0005ms, 0992ms total)
+T232C 004:372 Logging started @ 2017-08-26 18:58 (0005ms, 0992ms total)
+T232C 004:377 JLINK_SetWarnOutHandler(...) (0000ms, 0992ms total)
+T232C 004:377 JLINK_OpenEx(...)
+Firmware: J-Link ARM-OB STM32 compiled Aug 22 2012 19:52:04
+Hardware: V7.00
+S/N: 20090928
+Feature(s): RDI,FlashDL,FlashBP,JFlash,GDBFullWEBSRV Webserver running on local port 19080 (0092ms, 1084ms total)
+T232C 004:377   returns O.K. (0092ms, 1084ms total)
+T232C 004:469 JLINK_GetEmuCaps()  returns 0x88EA5833 (0000ms, 1084ms total)
+T232C 004:470 JLINK_TIF_GetAvailable(...) (0000ms, 1084ms total)
+T232C 004:470 JLINK_SetErrorOutHandler(...) (0000ms, 1084ms total)
+T232C 004:470 JLINK_ExecCommand("ProjectFile = "C:\Users\zhoug\Documents\STM32_PRO\Wearable_code\MDK-ARM\JLinkSettings.ini"", ...).   returns 0x00 (0001ms, 1085ms total)
+T232C 004:471 JLINK_ExecCommand("Device = STM32F411RETx", ...). Device "STM32F411RE" selected.  returns 0x00 (0001ms, 1086ms total)
+T232C 004:472 JLINK_ExecCommand("DisableConnectionTimeout", ...).   returns 0x01 (0000ms, 1086ms total)
+T232C 004:472 JLINK_GetHardwareVersion()  returns 0x11170 (0000ms, 1086ms total)
+T232C 004:472 JLINK_GetDLLVersion()  returns 61603 (0000ms, 1086ms total)
+T232C 004:472 JLINK_GetFirmwareString(...) (0000ms, 1086ms total)
+T232C 004:472 JLINK_GetDLLVersion()  returns 61603 (0000ms, 1086ms total)
+T232C 004:472 JLINK_GetCompileDateTime() (0000ms, 1086ms total)
+T232C 004:472 JLINK_GetFirmwareString(...) (0000ms, 1086ms total)
+T232C 004:472 JLINK_GetHardwareVersion()  returns 0x11170 (0000ms, 1086ms total)
+T232C 004:472 JLINK_TIF_Select(JLINKARM_TIF_SWD)  returns 0x00 (0001ms, 1087ms total)
+T232C 004:473 JLINK_SetSpeed(5000) (0000ms, 1087ms total)
+T232C 004:473 JLINK_SetResetType(JLINKARM_RESET_TYPE_NORMAL)  returns JLINKARM_RESET_TYPE_NORMAL (0000ms, 1087ms total)
+T232C 004:473 JLINK_Reset() >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF>STM32 (connect): Can not attach to CPU. Trying connect under reset. >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF>
+  ***** Error: STM32: Connecting to CPU via connect under reset failed.
+ >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF>STM32 (connect): Can not attach to CPU. Trying connect under reset. >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF>
+  ***** Error: STM32: Connecting to CPU via connect under reset failed.JLINK_GetId() >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF>STM32 (connect): Can not attach to CPU. Trying connect under reset. >0x10B TIF> >0x10F TIF> >0x10B TIF>
+ >0x10F TIF>
+  ***** Error: STM32: Connecting to CPU via connect under reset failed. >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF>STM32 (connect): Can not attach to CPU. Trying connect under reset. >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF>
+  ***** Error: STM32: Connecting to CPU via connect under reset failed.  returns 0x00000000 (0687ms, 2983ms total)
+T232C 006:369 JLINK_GetId() >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF>STM32 (connect): Can not attach to CPU. Trying connect under reset. >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF>
+  ***** Error: STM32: Connecting to CPU via connect under reset failed. >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x0D TIF> >0x10B TIF> >0x10F TIF> >0x10B TIF> >0x10F TIF>STM32 (connect): Can not attach to CPU. Trying connect under reset. >0x10B TIF>
+ >0x10F TIF> >0x10B TIF> >0x10F TIF>
+  ***** Error: STM32: Connecting to CPU via connect under reset failed.  returns 0x00000000 (0685ms, 3668ms total)
+T232C 007:055 JLINK_GetFirmwareString(...) (0000ms, 3668ms total)
+T232C 028:003 JLINK_Close() (0005ms, 3673ms total)
+T232C 028:003  (0005ms, 3673ms total)
+T232C 028:003 Closed (0005ms, 3673ms total)

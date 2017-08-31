@@ -85,7 +85,7 @@ void MX_GPIO_Init(void)
                           |OLED_D9_Pin|OLED_D10_Pin|OLED_D11_Pin|OLED_D12_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, VPP_EN_Pin|E_RDB_Pin|Vibration_motor_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, VPP_EN_Pin|Vibration_motor_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, OLED_CS_Pin|OLED_RST_Pin|GPIO_PIN_2|OLED_WRD_Pin, GPIO_PIN_RESET);
@@ -103,8 +103,8 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PAPin PAPin PAPin */
-  GPIO_InitStruct.Pin = VPP_EN_Pin|E_RDB_Pin|Vibration_motor_Pin;
+  /*Configure GPIO pins : PAPin PAPin */
+  GPIO_InitStruct.Pin = VPP_EN_Pin|Vibration_motor_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

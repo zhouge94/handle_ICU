@@ -64,7 +64,7 @@ double real_data;
 
 unsigned char Fuhao_imag=0,Fuhao_real;
 float Magnitude,Impedance1,ImpedanceSUM;//幅值
-double Gainfactor=5.966067195828e-009 ,Gain_factor,GainFactorSum=0;//系数，阻抗 官方评估板 Gainfactor=5.966067195828e-009
+double Gainfactor=5.966067195828e-005 ,Gain_factor,GainFactorSum=0;//系数，阻抗 官方评估板 Gainfactor=5.966067195828e-009
 float Impedance;//系数，阻抗
 
 double impedance,new_impedance,last_impedance,last_last_impedance;
@@ -152,8 +152,8 @@ float Sample (void)//7ms
 				Realdata = real_byte_high*0x100 +real_byte_low;
 				Imagdata = imag_byte_high*0x100 +imag_byte_low;
 				HAL_I2C_Mem_Write(&hi2c1, AD5933_addr, 0X80, I2C_MEMADD_SIZE_8BIT, AD5933_CMD_BUF_24, 1,500);//重复频率
-       //return (1/(sqrt(Imagdata*Imagdata+Realdata*Realdata)*Gainfactor));
-       return ((Imagdata*Imagdata+Realdata*Realdata)*Gainfactor);
+       return (1/(sqrt(Imagdata*Imagdata+Realdata*Realdata)*Gainfactor));
+       //return ((Imagdata*Imagdata+Realdata*Realdata)*Gainfactor);
 			 break;
 			} // end of D2 test condition
        } // end of D1 true condition

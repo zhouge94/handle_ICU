@@ -81,23 +81,24 @@ unsigned int Data_Change(unsigned int data)
 }
 void READ_MPU6050(void)
 {
+  /*
 	BUF[0]=MSingle_Read(MPU6050_Addr,GYRO_XOUT_L);
 	BUF[1]=MSingle_Read(MPU6050_Addr,GYRO_XOUT_H);
 	sys.GYRO_X=BUF[1]*0X100+BUF[0];
-	sys.GYRO_X=Data_Change(sys.GYRO_X)/16.4;
+	//sys.GYRO_X=Data_Change(sys.GYRO_X)/16.4;
 //==============================================================
 	BUF[2]=MSingle_Read(MPU6050_Addr,GYRO_YOUT_L);
 	BUF[3]=MSingle_Read(MPU6050_Addr,GYRO_YOUT_H);
 
 	sys.GYRO_Y=BUF[3]*0X100+BUF[2];
-	sys.GYRO_Y=Data_Change(sys.GYRO_Y)/16.4;
+	//sys.GYRO_Y=Data_Change(sys.GYRO_Y)/16.4;
 
 //==============================================================
 
    BUF[4]=MSingle_Read(MPU6050_Addr,GYRO_ZOUT_L);
    BUF[5]=MSingle_Read(MPU6050_Addr,GYRO_ZOUT_H);
    sys.GYRO_Z=BUF[5]*0X100+BUF[4];
-   sys.GYRO_Z=Data_Change(sys.GYRO_Z)/16.4;
+  // sys.GYRO_Z=Data_Change(sys.GYRO_Z)/16.4;
 
 //==============================================================
 
@@ -105,26 +106,26 @@ void READ_MPU6050(void)
 	BUF[7]=MSingle_Read(MPU6050_Addr,TEMP_OUT_H);
 	sys.T_T=((uint16_t)BUF[7]<<8)|BUF[6];
 	sys.T_T=36.53+((float)sys.T_T)/340.0;
-	sys.T_T=Data_Change(sys.T_T);
-
+	//sys.T_T=Data_Change(sys.T_T);
+*/
 //==============================================================
 
 	BUF[8]=MSingle_Read(MPU6050_Addr,ACCEL_XOUT_L);
 	BUF[9]=MSingle_Read(MPU6050_Addr,ACCEL_XOUT_H);
 	sys.ACCEL_X=BUF[9]*0X100+BUF[8];
-	sys.ACCEL_X=98*Data_Change(sys.ACCEL_X)/8192.0;
+	//sys.ACCEL_X=98*Data_Change(sys.ACCEL_X)/8192.0;
 
 	BUF[10]=MSingle_Read(MPU6050_Addr,ACCEL_YOUT_L);
 	BUF[11]=MSingle_Read(MPU6050_Addr,ACCEL_YOUT_H);
 	sys.ACCEL_Y=BUF[11]*0X100+BUF[10];
-	sys.ACCEL_Y=98*Data_Change(sys.ACCEL_Y)/8192.0;
+	//sys.ACCEL_Y=98*Data_Change(sys.ACCEL_Y)/8192.0;
 
 	BUF[12]=MSingle_Read(MPU6050_Addr,ACCEL_ZOUT_L);
 	BUF[13]=MSingle_Read(MPU6050_Addr,ACCEL_ZOUT_H);
 
 	sys.ACCEL_Z=BUF[13]*0X100+BUF[12];
-	sys.ACCEL_Z=98*Data_Change(sys.ACCEL_Z)/8192.0;
+	//sys.ACCEL_Z=98*Data_Change(sys.ACCEL_Z)/8192.0;
 
-	sys.SUM_ACCEL=sqrt(sys.ACCEL_X*sys.ACCEL_X + sys.ACCEL_Y*sys.ACCEL_Y + sys.ACCEL_Z*sys.ACCEL_Z);
+	//sys.SUM_ACCEL=sqrt(sys.ACCEL_X*sys.ACCEL_X + sys.ACCEL_Y*sys.ACCEL_Y + sys.ACCEL_Z*sys.ACCEL_Z);
 
 }

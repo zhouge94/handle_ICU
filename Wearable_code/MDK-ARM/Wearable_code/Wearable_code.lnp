@@ -1,9 +1,4 @@
---cpu Cortex-M4.fp
-"wearable_code\syscall.o"
-"wearable_code\sd_diskio.o"
-"wearable_code\ff_gen_drv.o"
-"wearable_code\ff.o"
-"wearable_code\diskio.o"
+--cpu=Cortex-M4.fp
 "wearable_code\heap_4.o"
 "wearable_code\queue.o"
 "wearable_code\timers.o"
@@ -44,8 +39,6 @@
 "wearable_code\stm32f4xx_hal_msp.o"
 "wearable_code\stm32f4xx_it.o"
 "wearable_code\tim.o"
-"wearable_code\bsp_driver_sd.o"
-"wearable_code\fatfs.o"
 "wearable_code\rtc.o"
 "wearable_code\i2c.o"
 "wearable_code\gpio.o"
@@ -61,7 +54,6 @@
 "wearable_code\sys.o"
 "wearable_code\system_stm32f4xx.o"
 --library_type=microlib --strict --scatter "Wearable_code\Wearable_code.sct"
-
---diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--diag_suppress=L6329 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "Wearable_code.map" -o Wearable_code\Wearable_code.axf

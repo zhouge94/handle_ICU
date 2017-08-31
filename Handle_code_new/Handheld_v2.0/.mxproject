@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=C:/Users/zhoug/Documents/STM32 PRO/Handle_code_new/Handheld_v2.0/Inc
+HeaderPath=C:/Users/zhoug/Documents/STM32_PRO/Handle_code_new/Handheld_v2.0/Inc
 HeaderFiles=gpio.h;adc.h;dma.h;ffconf.h;bsp_driver_sd.h;fatfs.h;FreeRTOSConfig.h;i2c.h;rtc.h;sdio.h;tim.h;usart.h;stm32f4xx_it.h;stm32f4xx_hal_conf.h;main.h;usb_device.h;usbd_conf.h;usbd_desc.h;usbd_storage_if.h;
-SourcePath=C:/Users/zhoug/Documents/STM32 PRO/Handle_code_new/Handheld_v2.0/Src
+SourcePath=C:/Users/zhoug/Documents/STM32_PRO/Handle_code_new/Handheld_v2.0/Src
 SourceFiles=gpio.h;adc.h;dma.h;ffconf.h;bsp_driver_sd.h;fatfs.h;FreeRTOSConfig.h;i2c.h;rtc.h;sdio.h;tim.h;usart.h;stm32f4xx_it.h;stm32f4xx_hal_conf.h;main.h;gpio.c;adc.c;dma.c;bsp_driver_sd.c;fatfs.c;freertos.c;i2c.c;rtc.c;sdio.c;tim.c;usart.c;stm32f4xx_it.c;stm32f4xx_hal_msp.c;stm32f4xx_hal_timebase_TIM.c;main.c;usb_device.h;usbd_conf.h;usbd_desc.h;usbd_storage_if.h;usb_device.c;usbd_conf.c;usbd_desc.c;usbd_storage_if.c;
 
 [PreviousLibFiles]

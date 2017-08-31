@@ -48,3 +48,21 @@ double ZhongZhiFilter(int N,float *DATE_RAW )
         sum += value_buf[count];
     return (double)(sum/(N-4));
 }
+void sys_data_init(void)
+{
+	sys.uart1_count=0;
+} 
+void USER_PWM_SetDutyRatio(TIM_HandleTypeDef *htim,uint32_t Channel,uint8_t value)  
+{  
+    TIM_OC_InitTypeDef sConfigOC;  
+      
+    uint32_t period=htim->Init.Period+1;  
+    uint32_t pluse=(value * period)/100;  
+      
+    sConfigOC.OCMode = TIM_OCMODE_PWM1;  
+    sConfigOC.Pulse = pluse;  
+    sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;  
+    sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;  
+    HAL_TIM_PWM_ConfigChannel(htim, &sConfigOC, Channel);  
+    HAL_TIM_PWM_Start(htim, Channel);     
+}

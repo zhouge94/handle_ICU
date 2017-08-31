@@ -27,22 +27,29 @@ extern UART_HandleTypeDef huart2;
 
 #define OUTF(buffer,cnt) HAL_UART_Transmit_DMA(&huart2,buffer,cnt);
 uint8_t debugf(uint8_t level,char *fmt, ...);
-typedef enum
-{
-	Ascii,
-	Datascope
-}TranTypeDef;
+
 typedef struct
 {
+  __IO unsigned char ecg_index;
+  __IO short int ecg1buff[10];
+  __IO short int ecg2buff[10];
+  __IO short int ecg3buff[10];
+  
+  __IO unsigned char mpu_index;
+  __IO short int mpuAxbuff[10];
+  __IO short int mpuAybuff[10];
+  __IO short int mpuAzbuff[10];
+  
 	__IO float a;
 	__IO float b;
-	__IO TranTypeDef Transt;
-	__IO float GYRO_X;
-	__IO float GYRO_Y;
-	__IO float GYRO_Z;
-	__IO float ACCEL_X;
-	__IO float ACCEL_Y;
-	__IO float ACCEL_Z;
+
+	__IO short int GYRO_X;
+	__IO short int GYRO_Y;
+	__IO short int GYRO_Z;
+	__IO short int ACCEL_X;
+	__IO short int ACCEL_Y;
+	__IO short int ACCEL_Z;
+  
 	__IO float SUM_ACCEL;
 	__IO float T_T;
 	__IO float T_r;

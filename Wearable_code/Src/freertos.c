@@ -55,27 +55,33 @@
 #include "sys.h"
 #include "DataScope_DP.h"
 #include "ECG.h"
+#include "DS18b20.h"
+#include "AD5933.h"
+#include "MPU6050.h"
+
 /* USER CODE END Includes */
 
 /* Variables -----------------------------------------------------------------*/
 osThreadId defaultTaskHandle;
 osTimerId SenderHandle;
+osSemaphoreId send_semHandle;
 
 /* USER CODE BEGIN Variables */
 osThreadId MPU_TaskHandle;
 osThreadId Hx_TaskHandle;
+osThreadId Temp_TaskHandle;
 /* USER CODE END Variables */
 
 /* Function prototypes -------------------------------------------------------*/
 void StartDefaultTask(void const * argument);
 void Callback_Sender(void const * argument);
 
-extern void MX_FATFS_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* USER CODE BEGIN FunctionPrototypes */
 void MPU_Task(void const * argument);
 void Hx_Task(void const * argument);
+void Temp_Task(void const * argument);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -92,6 +98,11 @@ void MX_FREERTOS_Init(void) {
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
 
+  /* Create the semaphores(s) */
+  /* definition and creation of send_sem */
+  osSemaphoreDef(send_sem);
+  send_semHandle = osSemaphoreCreate(osSemaphore(send_sem), 1);
+
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
@@ -103,7 +114,7 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
-	osTimerStart(SenderHandle,1);
+	osTimerStart(SenderHandle,2);
   /* USER CODE END RTOS_TIMERS */
 
   /* Create the thread(s) */
@@ -112,11 +123,14 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  osThreadDef(MPUTask, MPU_Task, osPriorityNormal, 0, 128);
+  osThreadDef(MPUTask, MPU_Task, osPriorityBelowNormal, 0, 1280);
   MPU_TaskHandle = osThreadCreate(osThread(MPUTask), NULL);
 
-  osThreadDef(HxTask, Hx_Task, osPriorityNormal, 0, 128);
+  osThreadDef(HxTask, Hx_Task, osPriorityBelowNormal, 0, 1280);
   Hx_TaskHandle = osThreadCreate(osThread(HxTask), NULL);
+
+  osThreadDef(TempTask, Temp_Task, osPriorityBelowNormal, 0, 1280);
+  Temp_TaskHandle = osThreadCreate(osThread(TempTask), NULL);
 
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -129,11 +143,15 @@ void MX_FREERTOS_Init(void) {
 /* StartDefaultTask function */
 void StartDefaultTask(void const * argument)
 {
-  /* init code for FATFS */
-  MX_FATFS_Init();
 
   /* USER CODE BEGIN StartDefaultTask */
-
+  
+  int i;
+  for(i=0;i<255;i++)
+  {
+    Data_Pack.buffer[i]=i;
+  }
+  sys.ecg_index=0;
 	/******´ò¿ªUSART1,2£¬6¿ÕÏÐÖÐ¶Ï *****/	 		 
 	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE); 
 	__HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);
@@ -142,8 +160,17 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
-  }
+    osSemaphoreWait(send_semHandle,osWaitForever);
+    Generate_Data(&Data_Pack,1,20,(unsigned char *)sys.ecg1buff);//ecg data
+    Generate_Data(&Data_Pack,2,20,(unsigned char *)sys.ecg2buff);
+    Generate_Data(&Data_Pack,3,20,(unsigned char *)sys.ecg3buff);
+    Generate_Data(&Data_Pack,4,8,(unsigned char *)sys.mpuAxbuff);//mpu data
+    Generate_Data(&Data_Pack,5,8,(unsigned char *)sys.mpuAybuff);
+    Generate_Data(&Data_Pack,6,8,(unsigned char *)sys.mpuAzbuff);
+    Generate_Data(&Data_Pack,7,4,(unsigned char *)&sys.ZuKang);//huxi data
+    SendPACK(0xff,Data_Pack.size,Data_Pack.buffer);
+    Data_Pack.size=0;
+   }
   /* USER CODE END StartDefaultTask */
 }
 
@@ -151,39 +178,47 @@ void StartDefaultTask(void const * argument)
 void Callback_Sender(void const * argument)
 {
   /* USER CODE BEGIN Callback_Sender */
-	 static int count=0,countmpu=0,countother=0;
-	 static unsigned char temp=0;
-   //printf("hello\r\n");
-	 switch(count++)
-	 {
-	 case 0:
-	 case 2:
-	 case 4:
-	 case 6:
-	 case 8:
-		 Send3ECG(1,ECG_DATA1.ECG_DATA,ECG_DATA2.ECG_DATA,temp++);
-		 //Send3ECG(1,0,1,temp++);
-		 break;
-	 case 1:
-		 //SendMPU(1,1,1,1,1);
-		 //if(countmpu%2) SendFloat(0,sys.ACCEL_X);
-		 //else SendFloat(3,sys.GYRO_X);
-		 break;
-	 case 3:
-		 //if(countmpu%2) SendFloat(1,sys.ACCEL_Y);
-		 //else SendFloat(4,sys.GYRO_Y);
-		 break;
-	 case 5:
-		 //if(countmpu%2) SendFloat(2,sys.ACCEL_Z);
-		 //else SendFloat(5,sys.GYRO_Z);
-		 break;
-	 case 7:
-	 break;
-	 case 9:
-		 count=0;
-	 break;
-	 default:break;
-	 }
+    static int count=0,countmpu=0,countother=0,i;
+    static unsigned char temp=0,temp2=0;
+  
+  switch(countmpu++)
+  {
+    case 0:
+      sys.mpuAxbuff[sys.mpu_index]=sys.ACCEL_X;
+      sys.mpuAybuff[sys.mpu_index]=sys.ACCEL_Y;
+      sys.mpuAzbuff[sys.mpu_index]=sys.ACCEL_Z;
+      sys.mpu_index++;
+      if(sys.mpu_index>=10)
+      {
+        sys.mpu_index=0; 
+      }
+      break;
+    case 4:
+      countmpu=0;
+      break;
+    default:break;
+  }
+  switch(count++)
+  {
+    case 0:
+      sys.ecg1buff[sys.ecg_index]=ECG_DATA1.ECG_DATA;
+      sys.ecg2buff[sys.ecg_index]=ECG_DATA2.ECG_DATA;
+      sys.ecg3buff[sys.ecg_index]=temp2++;
+      sys.ecg_index++;
+      if(sys.ecg_index>=10)
+      {
+        osSemaphoreRelease(send_semHandle);
+        sys.mpu_index=0; 
+        sys.ecg_index=0; 
+      }
+      break;
+    case 1:
+      count=0;
+      break;
+    default:break;
+  }
+  
+  
   /* USER CODE END Callback_Sender */
 }
 
@@ -219,8 +254,18 @@ void Hx_Task(void const * argument)
 		{
 			count=0;	
 		  sys.ZuKang=sum/10.0;
+		  //sys.ZuKang=10.0;
 			sum=0;			
 		}
+		osDelay(5);
+	}
+
+}	
+void Temp_Task(void const * argument)
+{
+	int count=0;
+	while(1)
+	{
 		osDelay(5);
 	}
 

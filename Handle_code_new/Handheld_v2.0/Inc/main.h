@@ -72,8 +72,6 @@
 #define OLED_D3_GPIO_Port GPIOC
 #define VPP_EN_Pin GPIO_PIN_4
 #define VPP_EN_GPIO_Port GPIOA
-#define E_RDB_Pin GPIO_PIN_5
-#define E_RDB_GPIO_Port GPIOA
 #define Vibration_motor_Pin GPIO_PIN_7
 #define Vibration_motor_GPIO_Port GPIOA
 #define OLED_D4_Pin GPIO_PIN_4
