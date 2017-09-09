@@ -1,0 +1,12 @@
+set (SOURCE_FILES my_uart.c my_msg.c uart_server_main.c)
+include_directories(./)
+add_executable(uart_server ${SOURCE_FILES})
+set_target_properties(uart_server PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../bin)
+
+set (SOURCE_FILES_REV rev.c)
+add_executable(rev_server ${SOURCE_FILES_REV})
+set_target_properties(rev_server PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../bin)
+
+set (SOURCE_FILES_KEY key_server_main.c)
+add_executable(key_server ${SOURCE_FILES_KEY})
+set_target_properties(key_server PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../bin)

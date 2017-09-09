@@ -1,0 +1,6 @@
+#!/bin/sh
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin
+ACTTION=$1
+source /zgene/startup.sh
+/zgene/run.sh 
+#/forlinx/bin/app.sh $ACTTION &

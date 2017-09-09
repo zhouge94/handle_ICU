@@ -1,0 +1,12 @@
+
+########################################################
+# Huawei ET-127 / ET-128
+#
+
+DefaultVendor=0x12d1
+DefaultProduct=0x1da1
+
+HuaweiMode=1
+
+InquireDevice=0 # very important
+
