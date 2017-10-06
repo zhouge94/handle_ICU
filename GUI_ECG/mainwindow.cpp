@@ -63,6 +63,13 @@ MainWindow::MainWindow(QWidget *parent) :
     QTimer *timer_key=new QTimer;
     connect(timer_key,SIGNAL(timeout()),this,SLOT(keyEvent()));
     timer_key->start(100);
+
+    QTimer *timer_hrhq=new QTimer;
+    connect(timer_hrhq,SIGNAL(timeout()),this,SLOT(HRHQ_Event()));
+    timer_hrhq->start(100);
+
+    sys.ssxl=99;
+
 }
 MainWindow::~MainWindow()
 {
@@ -141,6 +148,43 @@ void MainWindow::keyEvent(void)
         //bt[forcus%9]->setFocus();
         break;
     default :break;
+    }
+}
+void MainWindow::HRHQ_Event(void)
+{
+    struct msgstru
+    {
+            long msg_type;
+            unsigned char revbuff[512];
+    };
+    struct msgstru revs;
+    static int msgid,ret_value;
+    static int first_in=1,MSGKEY=0x1103;
+    if(first_in)
+    {
+        msgid = msgget(MSGKEY,IPC_EXCL );/*检查消息队列是否存在 */
+        if(msgid < 0)  printf("msq not existed! errno=%d [%s] \n\r",errno,strerror(errno));
+        else
+        {
+            do
+            {
+                ret_value = msgrcv(msgid,&revs,1,1,IPC_NOWAIT);
+            }while(ret_value>0);
+            first_in=0;
+        }
+    }
+    if(!first_in)
+    {
+        ret_value = msgrcv(msgid,&revs,6,1,IPC_NOWAIT);
+        if(ret_value>0)
+        {
+            sys.HQ[0]=revs.revbuff[3];
+            sys.HQ[1]=revs.revbuff[4];
+            sys.HQ[2]=revs.revbuff[5];
+            if(sys.HQ[0]>0)sys.ssxl=revs.revbuff[0];
+            else if(sys.HQ[1]>0)sys.ssxl=revs.revbuff[1];
+            else if(sys.HQ[2]>0)sys.ssxl=revs.revbuff[2];
+        }
     }
 }
 void MainWindow::OutOneinfo(const QString &msg)

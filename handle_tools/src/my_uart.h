@@ -12,4 +12,5 @@ int open_port(const char *Portname);
 int set_port(int fd,int iBaudRate,int iDataSize,char cParity,int iStopBit);
 int read_port(const char *buf, int iByte);
 int write_port(const char *buf,int iByte);
+void SendStr(const char *str);
 void Init(const char *path,int rate);

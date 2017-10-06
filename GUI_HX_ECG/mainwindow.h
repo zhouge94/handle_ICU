@@ -33,6 +33,7 @@ private slots:
     void SecondCallBack();
     void onCommTimeout();
 
+    void keyEvent();
 private:
     Ui::MainWindow *ui;
 

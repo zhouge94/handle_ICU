@@ -30,6 +30,12 @@ struct HX_REV
 	float hu_data;
 };/*}}}*/
 struct HX_REV hx;
+unsigned char HR_HQ[6];
+unsigned char temp_ok=0;
+unsigned short int temp_5[5];
+float V_Bat;
+unsigned char env_ok=0;
+float env_f[6];
 unsigned char checksum(void* data,int n);
 void SendKey(unsigned char key);
 void setTimer(int seconds, int mseconds); 
@@ -73,6 +79,7 @@ int main(int argc,char **argv)
 		setTimer(0,4000);
 	}	/*}}}*/
 	SendKeymsq(0);
+	SendStr("RESET");
 	while(1)
 	{/*{{{*/
 begin:		do
@@ -103,6 +110,7 @@ begin:		do
 			sum=checksum((void *)&(Rbuff.buffer),Rbuff.size-2);
 			if(sum==Rbuff.checksum||Rbuff.checksum==0x00)
 			{
+				SendStr("OK");
 				if(Rbuff.addr==1)
 				{
 					memcpy(&ecg,Rbuff.buffer,sizeof(ecg));
@@ -160,6 +168,32 @@ begin:		do
 							i+=6;
 							continue;
 						}
+						else if(Rbuff.buffer[i]==0x08&&Rbuff.buffer[i+1]==6)
+						{
+							memcpy(HR_HQ,&Rbuff.buffer[i+2],6);
+							i+=8;
+							continue;
+						}
+						else if(Rbuff.buffer[i]==0x09&&Rbuff.buffer[i+1]==10)
+						{
+							memcpy(temp_5,&Rbuff.buffer[i+2],10);
+							i+=12;
+							temp_ok=1;
+							continue;
+						}
+						else if(Rbuff.buffer[i]==10&&Rbuff.buffer[i+1]==4)
+						{
+							memcpy(&V_Bat,&Rbuff.buffer[i+2],4);
+							i+=6;
+							continue;
+						}
+						else if(Rbuff.buffer[i]==11&&Rbuff.buffer[i+1]==20)
+						{
+							memcpy(env_f,&Rbuff.buffer[i+2],20);
+							i+=22;
+							env_ok=1;
+							continue;
+						}
 						else i++;
 					}while(i<Rbuff.size-2);
 					for(i=0;i<10;i++)
@@ -176,8 +210,24 @@ begin:		do
 						mpu.az=az[i];
 						SendMPUmsq(sizeof(mpu),(void *)&mpu);
 					}/*}}}*/
-					
 					SendHxmsq(sizeof(hx),(void *)&hx);
+					static int count=0;
+					if(count++%25==0)
+					{
+						SendRTHQmsq(sizeof(HR_HQ),(void *)HR_HQ);
+					}
+					if(temp_ok)
+					{
+						temp_ok=0;
+						Sendtempmsq(sizeof(temp_5),(void *)temp_5);
+					}
+					if(env_ok)
+					{
+						env_ok=0;
+						env_f[5]=V_Bat;
+//						printf("get env data,[%f],[%f],[%f],[%f][%f],[%f]\r\n",env_f[0],env_f[1],env_f[2],env_f[3],env_f[4],env_f[5]);
+						Sendenvmsq(sizeof(env_f),(void *)env_f);
+					}
 				}
 			}
 			else

@@ -7,6 +7,13 @@
 #include "sys.h"
 #include "iostream"
 #include "filter.h"
+
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include "sys/types.h"
+#include"sys/stat.h"
+#include"errno.h"
+#include"fcntl.h"
 extern QApplication *app;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -24,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 /////////////////////////////////////////////////////////////////////////////////////////
     sys.plot_range_TRange_Ecg=5;
-    sys.plot_range_TRange_hx=30;
+    sys.plot_range_TRange_hx=10;
 
     sys.ecgdata_index_cur=0;
     sys.ecgdata_index_last=0;
@@ -54,13 +61,90 @@ MainWindow::MainWindow(QWidget *parent) :
 
     SecondTimer.start(500);
     dataTimer_show1.start(0);
+    QTimer *timer_key=new QTimer;
+    connect(timer_key,SIGNAL(timeout()),this,SLOT(keyEvent()));
+    timer_key->start(100);
 
 }
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-
+void MainWindow::keyEvent(void)
+{
+    struct msgstru
+    {
+            long msg_type;
+            unsigned char revbuff[512];
+    };
+    struct msgstru revs;
+    static int msgid,ret_value;
+    static int first_in=1,MSGKEY=0x1100;
+//    static QPushButton *bt[9]={ui->pushButton_param1,ui->pushButton_param1_2,ui->pushButton_param1_3,
+//                       ui->pushButton_param1_4,ui->pushButton_param1_5,ui->pushButton_param1_6,
+//                       ui->pushButton_param1_7,ui->pushButton_param1_8,ui->pushButton_param1_9};
+    static unsigned int forcus=4,exit_n=0;
+    int key=0;
+    if(first_in)
+    {
+        msgid = msgget(MSGKEY,IPC_EXCL );/*检查消息队列是否存在 */
+        if(msgid < 0)  printf("msq not existed! errno=%d [%s] \n\r",errno,strerror(errno));
+        else
+        {
+            do
+            {
+                ret_value = msgrcv(msgid,&revs,1,1,IPC_NOWAIT);
+            }while(ret_value>0);
+            first_in=0;
+        }
+    }
+    if(!first_in)
+    {
+        ret_value = msgrcv(msgid,&revs,1,1,IPC_NOWAIT);
+        if(ret_value>0)
+        {
+            key=revs.revbuff[0];
+        }else
+        {
+           key=0;
+        }
+    }
+    switch(key)
+    {
+    case 2:
+        std::cout<<"++"<<std::endl;
+        forcus++;
+        //bt[forcus%9]->setFocus();
+        break;
+    case 8:
+        std::cout<<"--"<<std::endl;
+        forcus--;
+        //bt[forcus%9]->setFocus();
+        break;
+    case 7:
+        std::cout<<"ok"<<std::endl;
+        if(exit_n==1)
+        {
+            app->exit();
+        }
+        break;
+        //bt[forcus%9]->click();
+    case 9:
+        std::cout<<"exit"<<std::endl;
+        if(exit_n==0)
+        {
+            exit_n=1;
+            OutOneinfo(QString("退出?"));
+        }else
+        {
+            exit_n=0;
+        }
+        //forcus=4;
+        //bt[forcus%9]->setFocus();
+        break;
+    default :break;
+    }
+}
 void MainWindow::OutOneinfo(const QString &msg)
 {
     printf("%s\n",msg.toStdString().data());

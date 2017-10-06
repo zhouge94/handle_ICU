@@ -5,13 +5,10 @@
 #-------------------------------------------------
 
 QT       += core gui
-
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Handle_Startup_GUI
 TEMPLATE = app
-
-
 SOURCES += main.cpp\
         mainwindow.cpp \
     my_ini.cpp \

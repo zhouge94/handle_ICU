@@ -27,6 +27,7 @@ public:
     void OutOneinfo(const QString &msg);
     ~MainWindow();
 private slots:
+    void HRHQ_Event();
     void keyEvent();
     void UartCallback();
      void realtimeDataSlot_show1();

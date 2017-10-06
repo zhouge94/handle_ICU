@@ -281,7 +281,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>99.9</string>
+                <string>11.1-22.2</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -389,7 +389,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>99.9</string>
+                <string>51/98</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -497,7 +497,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>三导连</string>
+                <string>121/15</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -625,6 +625,32 @@
         <number>0</number>
        </property>
        <item>
+        <widget class="QPushButton" name="pushButton_5">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>上翻</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_4">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>下翻</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="pushButton_3">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -641,7 +667,7 @@
           <string notr="true"/>
          </property>
          <property name="text">
-          <string>休眠</string>
+          <string>取消</string>
          </property>
         </widget>
        </item>
@@ -662,7 +688,7 @@
           <string notr="true"/>
          </property>
          <property name="text">
-          <string>重启</string>
+          <string>确认</string>
          </property>
         </widget>
        </item>
@@ -683,7 +709,7 @@
           <string notr="true"/>
          </property>
          <property name="text">
-          <string>退出</string>
+          <string>电源</string>
          </property>
         </widget>
        </item>

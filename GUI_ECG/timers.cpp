@@ -241,6 +241,7 @@ void MainWindow::SecondCallBack()
         sys.count2=0;
     }
     ui->show1_ssxl->setText(QString("%1").arg(sys.ssxl,5,'f',1,' '));
+    ui->show1_pjxl->setText(QString("%1").arg(sys.pjxl,5,'f',1,' '));
 
 }
 

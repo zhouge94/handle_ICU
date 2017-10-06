@@ -107,9 +107,9 @@ void MainWindow::realtimeDataSlot_show1()
         ecg3Tracer->setBrush(Qt::red);
         ecg3Tracer->setSize(10);
 
-        ui->plot_ecg1->yAxis->setRange(-100000,100000);
-        ui->plot_ecg2->yAxis->setRange(-100000,100000);
-        ui->plot_ecg3->yAxis->setRange(-100000,100000);
+        ui->plot_ecg1->yAxis->setRange(-10000,10000);
+        ui->plot_ecg2->yAxis->setRange(-10000,10000);
+        ui->plot_ecg3->yAxis->setRange(-10000,10000);
         ui->plot_ecg1->xAxis->setRange(0,sys.plot_range_TRange_Ecg);
         ui->plot_ecg2->xAxis->setRange(0,sys.plot_range_TRange_Ecg);
         ui->plot_ecg3->xAxis->setRange(0,sys.plot_range_TRange_Ecg);
@@ -185,15 +185,15 @@ void MainWindow::realtimeDataSlot_show1()
                         mapminmax_t2->Change(ecg_d2_temp,&ecg_d2_temp_1);
                         mapminmax_t3->GetMinMax(ecg_d3_temp);
                         mapminmax_t3->Change(ecg_d3_temp,&ecg_d3_temp_1);
-                        {
+                        if(0){
                             if(mapminmax_t->xmax==0&&mapminmax_t->xmin==0)ui->plot_ecg1->yAxis->setRange(-10000,10000);
                             else ui->plot_ecg1->yAxis->setRange(mapminmax_t->xmin-mapminmax_t->xrange*0.5,mapminmax_t->xmax+mapminmax_t->xrange*0.5);
                         }
-                        {
+                        if(0){
                             if(mapminmax_t2->xmax==0&&mapminmax_t2->xmin==0)ui->plot_ecg2->yAxis->setRange(-10000,10000);
                              else ui->plot_ecg2->yAxis->setRange(mapminmax_t2->xmin-mapminmax_t2->xrange*0.5,mapminmax_t2->xmax+mapminmax_t2->xrange*0.5);
                         }
-                        {
+                        if(0){
                             if(mapminmax_t3->xmax==0&&mapminmax_t3->xmin==0)ui->plot_ecg3->yAxis->setRange(-10000,10000);
                              else ui->plot_ecg3->yAxis->setRange(mapminmax_t3->xmin-mapminmax_t3->xrange*0.5,mapminmax_t3->xmax+mapminmax_t3->xrange*0.5);
                         }

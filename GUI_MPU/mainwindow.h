@@ -26,6 +26,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     void OutOneinfo(const QString &msg);
     ~MainWindow();
+public slots:
+    void keyEvent();
 private slots:
     void UartCallback();
      void realtimeDataSlot_show1();

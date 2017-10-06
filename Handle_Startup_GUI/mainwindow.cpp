@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     init_sys_param();
     if(sys.planform!=(sys_S::PC)) this->showFullScreen();
+    system("rm /tmp/ch*");
     InitWinParam();
     ui->pushButton_param1_5->setFocus();
 }
@@ -55,7 +56,7 @@ void MainWindow::keyEvent(void)
     }
     if(!first_in)
     {
-        ret_value = msgrcv(msgid,&revs,1,1,0);
+        ret_value = msgrcv(msgid,&revs,1,1,IPC_NOWAIT);
         if(ret_value>0)
         {
             key=revs.revbuff[0];
@@ -131,7 +132,8 @@ void MainWindow::timercallback1()
                      ui->label7,ui->label8,ui->label9};
     static  int fd[9];
     char r_buf[50]={0};
-    int r_num,err=0,first_in=0,i;
+    int r_num,err=0,i;
+    static int first_in=0;
     const char *fifoname;
     keyEvent();
     if(first_in==0)
@@ -153,9 +155,16 @@ void MainWindow::timercallback1()
                         printf("sucess creat fifo[%s]\r\n",fifoname);
                         err=0;
                     }
+                }else
+                {
+                    err=-2;
+                    printf("fifo[%s],already exist \r\n",fifoname);
                 }
-                if(err==0)
+                if(err==0||err==-2)
+                {
                     fd[i]=open(fifoname,O_RDONLY|O_NONBLOCK);
+                    printf("sucess open fifo [%s] ,id[%d]\r\n",fifoname,fd[i]);
+                }
                 else
                     fd[i]=0;
             }else
@@ -166,7 +175,7 @@ void MainWindow::timercallback1()
     {
         if(fd[i]>0)
         {
-            r_num=read(fd[0],r_buf,100);
+            r_num=read(fd[i],r_buf,100);
             if(r_num>0)
             {
                 printf("CH[%d],r_num[%d],rev[%s]\r\n",i,r_num,r_buf);

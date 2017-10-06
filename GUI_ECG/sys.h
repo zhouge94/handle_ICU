@@ -13,7 +13,7 @@ typedef struct
     bool IsBeginRecode;
     float ssxl;
     float pjxl;
-
+    unsigned char HQ[3];
     double alltime;
     QList<double> common_t;
     QList<double> rthtdata;
