@@ -39,6 +39,8 @@ private slots:
 
     void on_pushButton_reset_clicked();
 
+    void on_pushButton_exit_clicked();
+
 private:
     Ui::MainWindow *ui;
     void InitWinParam();

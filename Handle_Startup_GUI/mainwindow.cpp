@@ -178,6 +178,7 @@ void MainWindow::timercallback1()
             r_num=read(fd[i],r_buf,100);
             if(r_num>0)
             {
+                r_buf[r_num]=0;
                 printf("CH[%d],r_num[%d],rev[%s]\r\n",i,r_num,r_buf);
                 QString *temp=new QString(r_buf);
                 label[i]->setText(*temp);

@@ -1,0 +1,55 @@
+[Init]
+platform=ARM_4418
+[param1]
+enable=1
+title=心电呼吸(/min)
+color=RED
+action=/zgene/disk/system/ECG_HX_GUI -qws
+fifo=/tmp/ch1_fifo
+[param2]
+enable=1
+title=三导心电
+color=RED
+action=/zgene/disk/system/ECG_GUI -qws
+fifo=/tmp/ch2_fifo
+[param3]
+enable=1
+title=运动数据(运动量)
+color=RED
+action=/zgene/disk/system/MPU_GUI -qws
+fifo=/tmp/ch3_fifo
+[param4]
+enable=1
+title=体温(℃)
+color=RED
+action=/zgene/disk/system/Temp_GUI -stylesheet style.qss -qws
+fifo=/tmp/ch4_fifo
+[param5]
+enable=1
+title=环境温度(℃)
+color=RED
+action=ls
+fifo=/tmp/ch5_fifo
+[param6]
+enable=1
+title=环境湿度(%)
+color=RED
+fifo=/tmp/ch6_fifo
+[param7]
+enable=1
+title=更多(电量%)
+color=RED
+action=reboot
+fifo=/tmp/ch7_fifo
+[param8]
+enable=1
+title=气压(MPa)
+color=RED
+action=/zgene/disk/system/reset.sh
+fifo=/tmp/ch8_fifo
+[param9]
+enable=1
+title=CO浓度(%)
+color=RED
+action=poweroff
+fifo=/tmp/ch9_fifo

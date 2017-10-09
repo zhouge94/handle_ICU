@@ -20,5 +20,4 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-OTHER_FILES += \
-    style.qss
+OTHER_FILES +=

@@ -149,10 +149,9 @@ void SendKeymsq(unsigned char key_value)
 		pmsg.msg_types=1;
 		pmsg.msg_buf[0]=key_value;
 		ret=msgsnd(msqid,&pmsg,1,IPC_NOWAIT);
-		if(key_value==0x21)
-		{
-			system("echo  mem>/sys/power/state");
-		}
+		char cmd[100];
+		sprintf(cmd,"./key.sh %d",key_value);
+		system(cmd);
 	}
 
 }/*}}}*/
@@ -200,7 +199,7 @@ void SendRTHQmsq(int size,void *data)
 		else if(p[5]>0)HR=p[2];
 		//else HR=0;
 		char cmd[50];
-		sprintf(cmd,"echo '%3d' >> /tmp/ch2_fifo &",HR);
+		sprintf(cmd,"echo -n '%3d' > /tmp/ch2_fifo &",HR);
 		//printf(cmd);
 		system(cmd);
 	}
@@ -240,7 +239,7 @@ void Sendtempmsq(int size,void *data)
 			if(p[i]<min)min=p[i];
 		}
 		char cmd[100];
-		sprintf(cmd,"echo '%2.1f-%2.1f'>> /tmp/ch4_fifo &",min*1.0/100.0,max*1.0/100.0);
+		sprintf(cmd,"echo -n '%3.1f-%3.1f'> /tmp/ch4_fifo &",min*1.0/100.0,max*1.0/100.0);
 		system(cmd);
 		memcpy((void *)pmsg.msg_buf,data,size);
 		pmsg.msg_types=1;
@@ -283,17 +282,18 @@ void Sendenvmsq(int size,void *data)
 	}else
 	{
 		char cmd[100];
-		sprintf(cmd,"echo '%2.1f'>> /tmp/ch5_fifo &",p[0]);
+		sprintf(cmd,"echo -n '%4.1f'> /tmp/ch5_fifo &",p[0]);
 		system(cmd);
-		sprintf(cmd,"echo '%2.1f'>> /tmp/ch6_fifo &",p[1]);
+		sprintf(cmd,"echo -n '%4.1f'> /tmp/ch6_fifo &",p[1]);
 		system(cmd);
-		sprintf(cmd,"echo '%2.1f-%2.1f'>> /tmp/ch7_fifo &",p[2],p[5]);
+		sprintf(cmd,"echo -n '%3.1f-%3.1f'> /tmp/ch7_fifo &",p[2],p[5]);
 		system(cmd);
-		sprintf(cmd,"echo '%2.5f'>> /tmp/ch8_fifo &",p[3]);
+		sprintf(cmd,"echo -n '%6.4f'> /tmp/ch8_fifo &",p[3]*1.0);
 		system(cmd);
-		sprintf(cmd,"echo '%5.1f'>> /tmp/ch9_fifo &",p[4]);
+printf("%s\r\n",cmd);
+		sprintf(cmd,"echo -n '%6.3f'> /tmp/ch9_fifo &",p[4]*1.0);
 		system(cmd);
-
+printf("%s\r\n",cmd);
 		memcpy((void *)pmsg.msg_buf,data,size);
 		pmsg.msg_types=1;
 		ret=msgsnd(msqid,&pmsg,size,IPC_NOWAIT);

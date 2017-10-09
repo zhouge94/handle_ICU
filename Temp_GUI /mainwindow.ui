@@ -546,7 +546,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>胸右前</string>
+                   <string>右胸前</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -953,6 +953,19 @@
                </property>
                <property name="text">
                 <string>重置</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_exit">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>退出</string>
                </property>
               </widget>
              </item>

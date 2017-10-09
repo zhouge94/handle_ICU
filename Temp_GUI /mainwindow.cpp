@@ -25,6 +25,9 @@ MainWindow::MainWindow(QWidget *parent) :
     InitWinParam();
     ui->pushButton_reset->setFocus();
     update_temp_conf();
+#ifndef QT_DEBUG
+        this->showFullScreen();
+#endif
 }
 MainWindow::~MainWindow()
 {
@@ -41,7 +44,7 @@ void MainWindow::keyEvent(void)
     struct msgstru revs;
     static int msgid,ret_value;
     static int first_in=1,MSGKEY=0x1100;
-    static QPushButton *bt[7]={ui->pushButton_t1,ui->pushButton_t2,ui->pushButton_t3,ui->pushButton_t4,ui->pushButton_t5,ui->pushButton_save,ui->pushButton_reset};
+    static QPushButton *bt[8]={ui->pushButton_t1,ui->pushButton_t2,ui->pushButton_t3,ui->pushButton_t4,ui->pushButton_t5,ui->pushButton_save,ui->pushButton_reset,ui->pushButton_exit};
     static  unsigned int  forcus=6;
     int key=0;
     if(first_in)
@@ -73,22 +76,22 @@ void MainWindow::keyEvent(void)
     case 2:
         std::cout<<"++"<<std::endl;
         forcus++;
-        bt[forcus%7]->setFocus();
+        bt[forcus%8]->setFocus();
         break;
     case 8:
         std::cout<<"--"<<std::endl;
         forcus--;
-        if(forcus==0)forcus=7;
-        bt[forcus%7]->setFocus();
+        if(forcus==0)forcus=8;
+        bt[forcus%8]->setFocus();
         break;
     case 7:
         std::cout<<"ok"<<std::endl;
-        bt[forcus%7]->click();
+        bt[forcus%8]->click();
         break;
     case 9:
         std::cout<<"cancel"<<std::endl;
-        forcus=4;
-        bt[forcus%7]->setFocus();
+        forcus=5;
+        bt[forcus%8]->setFocus();
         break;
     default :break; 
     }
@@ -285,4 +288,9 @@ void MainWindow::update_temp_conf()
     ui->pushButton_t4->setText(QString("%1").arg(temp_index[3]));
     ui->pushButton_t5->setText(QString("%1").arg(temp_index[4]));
 
+}
+extern QApplication *app;
+void MainWindow::on_pushButton_exit_clicked()
+{
+    app->exit();
 }

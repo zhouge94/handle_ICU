@@ -3,7 +3,8 @@
   color:white;
   font-family:"微软雅黑";
 }
-CallWidget QLineEdit#telEdt
+
+QLineEdit
 {
   font-size:24px;
 }
@@ -18,19 +19,24 @@ QWidget{
 QLabel{
    background:transparent;
 }
-DailForm QLineEdit#phoneLineEdt{
-  font-size:36px;
-  font-weight: bold;
-}
+
 QPushButton,QToolButton{
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                  stop: 0 #5B5F5F, stop: 0.5 #0C2436,
                                  stop: 1.0 #27405A);
     border-style: outset;
-    border-width: 1px;
-    border-radius: 5px;
-    border-color: #11223F;
     padding: 1px;
+    border-radius: 5px;
+    border-style: outset;
+    border-radius: 5px;
+    border-width: 1px;
+    font-size:24px;
+    border-color: #11223F;
+
+}
+QPushButton[objectName="pushButton_t1"],QPushButton[objectName="pushButton_t2"],QPushButton[objectName="pushButton_t3"],QPushButton[objectName="pushButton_t4"],QPushButton[objectName="pushButton_t5"]
+{
+    min-width:85px;
 }
 QPushButton::focus,QToolButton::focus{
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
@@ -52,7 +58,7 @@ QPushButton::disabled,QToolButton::disabled{
     color:#6A6864;
 }
 QDialog QPushButton,QDialog QToolButton{
-  min-width:30px;
+  min-width:60px;
   min-height:23px;
 }
 QToolButton[objectName="minimizeToolBtn"] {
@@ -97,6 +103,7 @@ DailForm QToolButton#oneToolBtn,QToolButton#OneToolBtn,QToolButton#twoToolBtn,QT
 DailForm QToolButton#delToolBtn{
     border-radius: 10px;
 }
+
 QFrame{
     border-color:#32435E;
     border-width:1px;
