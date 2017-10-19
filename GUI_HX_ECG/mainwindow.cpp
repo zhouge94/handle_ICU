@@ -65,10 +65,49 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(timer_key,SIGNAL(timeout()),this,SLOT(keyEvent()));
     timer_key->start(100);
 
+    QTimer *timer_hrhq=new QTimer;
+    connect(timer_hrhq,SIGNAL(timeout()),this,SLOT(HRHQ_Event()));
+    timer_hrhq->start(100);
+
+    sys.ssxl=99;
+
 }
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+void MainWindow::HRHQ_Event(void)
+{
+    struct msgstru
+    {
+            long msg_type;
+            unsigned char revbuff[512];
+    };
+    struct msgstru revs;
+    static int msgid,ret_value;
+    static int first_in=1,MSGKEY=0x1104;
+    if(first_in)
+    {
+        msgid = msgget(MSGKEY,IPC_EXCL );/*检查消息队列是否存在 */
+        if(msgid < 0)  printf("msq not existed! errno=%d [%s] \n\r",errno,strerror(errno));
+        else
+        {
+            do
+            {
+                ret_value = msgrcv(msgid,&revs,6,0,IPC_NOWAIT);
+            }while(ret_value>0);
+            first_in=0;
+        }
+    }
+    if(!first_in)
+    {
+        ret_value = msgrcv(msgid,&revs,6,1,IPC_NOWAIT);
+        if(ret_value>0)
+        {
+            sys.ssxl=revs.revbuff[0];
+            sys.huxilv=revs.revbuff[1];
+        }
+    }
 }
 void MainWindow::keyEvent(void)
 {

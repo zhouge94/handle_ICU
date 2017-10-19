@@ -15,6 +15,7 @@
 #define MSGKEY_TEMP 0x1105 
 #define MSGKEY_ENV 0x1106
 #define MSGKEY_Key 0x1100
+#define MSGKEY_String 0x1110
 void SendMPUmsq(int size,void *data);
 void SendECGmsq(int size,void *data);
 void SendHxmsq(int size,void *data);
@@ -22,5 +23,5 @@ void SendKeymsq(unsigned char key_value);
 void SendRTHQmsq(int size,void *data);
 void Sendtempmsq(int size,void *data);
 void Sendenvmsq(int size,void *data);
-
+void SendString(int chx,char *data);
 

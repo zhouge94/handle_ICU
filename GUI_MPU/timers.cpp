@@ -58,8 +58,39 @@ void MainWindow::UartCallback()
             memcpy(&ecgs,&revs.revbuff,sizeof(ecgs));
             ecgchx[0]=ecgs.ecg1;
             ecgchx[1]=ecgs.ecg2;
-            ecgchx[2]=ecgs.ecg3;
+            ecgchx[2]=ecgs.ecg3;            
             AddData(0,ecgchx);
+
+            float sum_acc,ax,ay,az,k=0.0011992168,diff_sum;
+            static short int raw0[3]={0},diff_raw[3]={0};
+            static int count=0;
+            static float buffer_f[100];
+            ax=ecgs.ecg1*k;
+            ay=ecgs.ecg2*k;
+            az=ecgs.ecg3*k;
+            sum_acc=sqrt(ax*ax+ay*ay+az*az);
+
+            diff_raw[0]=ecgchx[0]-raw0[0];
+            diff_raw[1]=ecgchx[1]-raw0[1];
+            diff_raw[2]=ecgchx[2]-raw0[2];
+
+            diff_sum=sqrt((diff_raw[0]*diff_raw[0]+diff_raw[1]*diff_raw[1]+diff_raw[2]*diff_raw[2])*1.0)*k;
+            buffer_f[count++]=diff_sum;
+            if(count>=20)
+            {
+                float temp_sum=0,temp_ave;
+                for(count=0;count<20;count++)temp_sum+=buffer_f[count];
+                temp_ave=temp_sum/20;
+                //printf("get mpu data; ax[%f],ay[%f],ax[%f],sum[%f],d_sum[%f]\r\n",ax,ay,az,sum_acc,diff_sum);
+                count=0;
+                sys.ydqd=temp_ave*10;
+
+            }
+            raw0[0]=ecgchx[0];
+            raw0[1]=ecgchx[1];
+            raw0[2]=ecgchx[2];
+
+
             sys.count++;
         }else
         {
@@ -107,9 +138,9 @@ void MainWindow::realtimeDataSlot_show1()
         ecg3Tracer->setBrush(Qt::red);
         ecg3Tracer->setSize(10);
 
-        ui->plot_ecg1->yAxis->setRange(-10000,10000);
-        ui->plot_ecg2->yAxis->setRange(-10000,10000);
-        ui->plot_ecg3->yAxis->setRange(-10000,10000);
+        ui->plot_ecg1->yAxis->setRange(-15,15);
+        ui->plot_ecg2->yAxis->setRange(-15,15);
+        ui->plot_ecg3->yAxis->setRange(-15,15);
         ui->plot_ecg1->xAxis->setRange(0,sys.plot_range_TRange_Ecg);
         ui->plot_ecg2->xAxis->setRange(0,sys.plot_range_TRange_Ecg);
         ui->plot_ecg3->xAxis->setRange(0,sys.plot_range_TRange_Ecg);
@@ -131,7 +162,7 @@ void MainWindow::realtimeDataSlot_show1()
                 sys.ecgdata_index_last=i3;
                 for(i=i2;i<i3;i++)//copy the data to the show buff
                 {
-                    if(i%3==0)
+                    if(i%2==0)
                     {
                         ecg_key=sys.ecgdata_t.at(i);
                         vector_ecgkey.append(ecg_key-StartT_ecg);
@@ -153,6 +184,10 @@ void MainWindow::realtimeDataSlot_show1()
                     ecg3Tracer->setGraphKey(vector_ecgkey.last());
                 }
                 lastPointKey = key;
+                ui->plot_ecg1->graph(0)->rescaleValueAxis(true,false);
+                ui->plot_ecg2->graph(0)->rescaleValueAxis(true,false);
+                ui->plot_ecg3->graph(0)->rescaleValueAxis(true,false);
+
                 ui->plot_ecg1->replot();
                 ui->plot_ecg2->replot();
                 ui->plot_ecg3->replot();
@@ -185,16 +220,16 @@ void MainWindow::realtimeDataSlot_show1()
                         mapminmax_t2->Change(ecg_d2_temp,&ecg_d2_temp_1);
                         mapminmax_t3->GetMinMax(ecg_d3_temp);
                         mapminmax_t3->Change(ecg_d3_temp,&ecg_d3_temp_1);
-                        if(0){
-                            if(mapminmax_t->xmax==0&&mapminmax_t->xmin==0)ui->plot_ecg1->yAxis->setRange(-10000,10000);
+                        if(1){
+                            if(mapminmax_t->xmax<15&&mapminmax_t->xmin>-15)ui->plot_ecg1->yAxis->setRange(-15,15);
                             else ui->plot_ecg1->yAxis->setRange(mapminmax_t->xmin-mapminmax_t->xrange*0.5,mapminmax_t->xmax+mapminmax_t->xrange*0.5);
                         }
-                        if(0){
-                            if(mapminmax_t2->xmax==0&&mapminmax_t2->xmin==0)ui->plot_ecg2->yAxis->setRange(-10000,10000);
+                        if(1){
+                            if(mapminmax_t2->xmax<15&&mapminmax_t2->xmin>-15)ui->plot_ecg2->yAxis->setRange(-15,15);
                              else ui->plot_ecg2->yAxis->setRange(mapminmax_t2->xmin-mapminmax_t2->xrange*0.5,mapminmax_t2->xmax+mapminmax_t2->xrange*0.5);
                         }
-                        if(0){
-                            if(mapminmax_t3->xmax==0&&mapminmax_t3->xmin==0)ui->plot_ecg3->yAxis->setRange(-10000,10000);
+                        if(1){
+                            if(mapminmax_t3->xmax<15&&mapminmax_t3->xmin>-15)ui->plot_ecg3->yAxis->setRange(-15,15);
                              else ui->plot_ecg3->yAxis->setRange(mapminmax_t3->xmin-mapminmax_t3->xrange*0.5,mapminmax_t3->xmax+mapminmax_t3->xrange*0.5);
                         }
 
@@ -225,10 +260,10 @@ void MainWindow::SecondCallBack()
         this->showFullScreen();
 #endif
     }
-    if(count++<20)pjxl_sum+=sys.ssxl;
+    if(count++<20);//pjxl_sum+=sys.ssxl;
     else
     {
-        sys.pjxl=pjxl_sum/20.0;
+        //sys.pjxl=pjxl_sum/20.0;
         count=0;
         pjxl_sum=0;
     }
@@ -239,7 +274,21 @@ void MainWindow::SecondCallBack()
         sys.count=0;
         sys.count2=0;
     }
-    ui->show1_ssxl->setText(QString("%1").arg(sys.ssxl,5,'f',1,' '));
+    QString tiwei;
+    if(sys.ax>=sys.ay&&sys.ax>=sys.az)
+    {
+        tiwei="平躺";
+    }else if(sys.ay>=sys.ax&&sys.ay>=sys.az)
+    {
+        tiwei="站立";
+
+    }else if(sys.az>=sys.ay&&sys.az>=sys.ax)
+    {
+        tiwei="侧躺";
+    }
+    ui->show1_tiwei->setText(tiwei);
+
+    ui->show1_ydqd->setText(QString("%1").arg(sys.ydqd,5,'f',1,' '));
 
 }
 
@@ -252,10 +301,10 @@ void MainWindow::onCommTimeout()
     CommTimer.start(100);
     if(sys.IsBeginRecode)
     {
-        temp=sys.ecgtime;
-        sys.common_t.append(temp);
-        sys.rthtdata.append(sys.ssxl);
-        sys.pjhtdata.append(sys.pjxl);
+        //temp=sys.ecgtime;
+        //sys.common_t.append(temp);
+        //sys.rthtdata.append(sys.ssxl);
+        //sys.pjhtdata.append(sys.pjxl);
         //update common data
     }
 }

@@ -3,6 +3,7 @@
 #include "iostream"
 #include "qcustomplot.h"
 sys_S sys;
+#define K 0.0011992168
 void AddData(unsigned char chx,int *data)
 {
     int temp;
@@ -14,17 +15,20 @@ void AddData(unsigned char chx,int *data)
         case 0:
             temp=data[0];
             //sys.ecg1=filter_ecg1.RealFIR(65536-temp>>16);
-            sys.ecg1=temp*1.0;
+            sys.ecg1=temp*K;
+            sys.ax=sys.ecg1*sys.ecg1;
             sys.ecg1data.append(sys.ecg1);
 
             temp=data[1];
             //sys.ecg2=filter_ecg2.RealFIR(65536-(temp<<16)>>16);
-            sys.ecg2=temp*1.0;
+            sys.ecg2=temp*K;
+            sys.ay=sys.ecg2*sys.ecg2;
             sys.ecg2data.append(sys.ecg2);
 
             temp=data[2];
             //sys.ecg2=filter_ecg2.RealFIR(65536-(temp<<16)>>16);
-            sys.ecg3=temp*1.0;
+            sys.ecg3=temp*K;
+            sys.az=sys.ecg3*sys.ecg3;
             sys.ecg3data.append(sys.ecg3);
 
             sys.ecgtime+=ecg_T;

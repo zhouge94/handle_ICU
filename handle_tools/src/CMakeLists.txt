@@ -2,7 +2,7 @@ set (SOURCE_FILES my_uart.c my_msg.c uart_server_main.c)
 include_directories(./)
 add_executable(uart_server ${SOURCE_FILES})
 set_target_properties(uart_server PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../bin)
-
+target_link_libraries(uart_server -lm )
 #set (SOURCE_FILES_REV rev.c)
 #add_executable(rev_server ${SOURCE_FILES_REV})
 #set_target_properties(rev_server PROPERTIES RUNTIME_OUTPUT_DIRECTORY ../bin)

@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "qtimer.h"
 #include "stdio.h"
@@ -159,7 +159,7 @@ void MainWindow::HRHQ_Event(void)
     };
     struct msgstru revs;
     static int msgid,ret_value;
-    static int first_in=1,MSGKEY=0x1103;
+    static int first_in=1,MSGKEY=0x1104;
     if(first_in)
     {
         msgid = msgget(MSGKEY,IPC_EXCL );/*检查消息队列是否存在 */
@@ -168,7 +168,7 @@ void MainWindow::HRHQ_Event(void)
         {
             do
             {
-                ret_value = msgrcv(msgid,&revs,1,1,IPC_NOWAIT);
+                ret_value = msgrcv(msgid,&revs,6,0,IPC_NOWAIT);
             }while(ret_value>0);
             first_in=0;
         }
@@ -178,12 +178,7 @@ void MainWindow::HRHQ_Event(void)
         ret_value = msgrcv(msgid,&revs,6,1,IPC_NOWAIT);
         if(ret_value>0)
         {
-            sys.HQ[0]=revs.revbuff[3];
-            sys.HQ[1]=revs.revbuff[4];
-            sys.HQ[2]=revs.revbuff[5];
-            if(sys.HQ[0]>0)sys.ssxl=revs.revbuff[0];
-            else if(sys.HQ[1]>0)sys.ssxl=revs.revbuff[1];
-            else if(sys.HQ[2]>0)sys.ssxl=revs.revbuff[2];
+            sys.ssxl=revs.revbuff[0];
         }
     }
 }

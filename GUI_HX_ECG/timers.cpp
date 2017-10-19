@@ -170,6 +170,7 @@ void MainWindow::realtimeDataSlot_show1()
                         ecg1Tracer->setGraphKey(vector_ecgkey.last());
                     }
                     lastPointKey = key;
+                    ui->plot_ecg1->graph(0)->rescaleValueAxis(true,false);
                     ui->plot_ecg1->replot();
                 }
                 {
@@ -180,6 +181,7 @@ void MainWindow::realtimeDataSlot_show1()
                         ecg2Tracer->setGraphKey(vector_hxkey.last());
                     }
                     lastPointKey = key;
+                    ui->plot_ecg2->graph(0)->rescaleValueAxis(true,false);
                     ui->plot_ecg2->replot();
                 }
 
@@ -258,7 +260,6 @@ void MainWindow::SecondCallBack()
     if(count++<20)pjxl_sum+=sys.ssxl;
     else
     {
-        sys.pjxl=pjxl_sum/20.0;
         count=0;
         pjxl_sum=0;
     }
@@ -270,6 +271,7 @@ void MainWindow::SecondCallBack()
         sys.count2=0;
     }
     ui->show1_ssxl->setText(QString("%1").arg(sys.ssxl,5,'f',1,' '));
+    ui->show1_huxilv->setText(QString("%1").arg(sys.huxilv,5,'f',1,' '));
 
 }
 
@@ -285,7 +287,6 @@ void MainWindow::onCommTimeout()
         temp=sys.ecgtime;
         sys.common_t.append(temp);
         sys.rthtdata.append(sys.ssxl);
-        sys.pjhtdata.append(sys.pjxl);
         //update common data
     }
 }

@@ -34,6 +34,7 @@ private slots:
     void onCommTimeout();
 
     void keyEvent();
+    void HRHQ_Event();
 private:
     Ui::MainWindow *ui;
 

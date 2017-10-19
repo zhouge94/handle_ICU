@@ -346,7 +346,7 @@ color: rgb(255, 255, 0);</string>
                       <property name="font">
                        <font>
                         <family>Ubuntu</family>
-                        <pointsize>40</pointsize>
+                        <pointsize>35</pointsize>
                         <weight>50</weight>
                         <italic>false</italic>
                         <bold>false</bold>
@@ -441,7 +441,7 @@ color: rgb(255, 255, 0);</string>
                      <number>1</number>
                     </property>
                     <item>
-                     <widget class="QPushButton" name="show1_jkzk">
+                     <widget class="QPushButton" name="show1_huxilv">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                         <horstretch>0</horstretch>
@@ -457,7 +457,7 @@ color: rgb(255, 255, 0);</string>
                       <property name="font">
                        <font>
                         <family>Ubuntu</family>
-                        <pointsize>40</pointsize>
+                        <pointsize>35</pointsize>
                         <weight>50</weight>
                         <italic>false</italic>
                         <bold>false</bold>

@@ -12,7 +12,7 @@ typedef struct
 {
     bool IsBeginRecode;
     float ssxl;
-    float pjxl;
+    float huxilv;
 
     double alltime;
     double StartTime;

@@ -30,18 +30,18 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&SecondTimer, SIGNAL(timeout()), this, SLOT(SecondCallBack()));//the callback for seconds to do sth
     connect(&dataTimer_show1, SIGNAL(timeout()), this, SLOT(realtimeDataSlot_show1()));
 
-/////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     sys.plot_range_TRange_Ecg=5;
 
     sys.ecgdata_index_cur=0;
     sys.ecgdata_index_last=0;
-    sys.ecgrate=250;
- /////////////////////////////////////////////////////////////////////////////////////////
-    filter_ecg2.SetFilterA(fir_mb,50);
-    filter_ecg1.SetFilterA(fir_mb,50);
+    sys.ecgrate=100;
+    /////////////////////////////////////////////////////////////////////////////////////////
+    //filter_ecg2.SetFilterA(fir_mb,50);
+    //filter_ecg1.SetFilterA(fir_mb,50);
 
-    FindMinMax_ecg.Set(-400);
-////////////////////////////////////////////////////////////////////////////////////////
+    //FindMinMax_ecg.Set(-400);
+    ////////////////////////////////////////////////////////////////////////////////////////
     // 使用线程,跑定时器
 
     CommTimer.start(200);
@@ -71,15 +71,12 @@ void MainWindow::keyEvent(void)
 {
     struct msgstru
     {
-            long msg_type;
-            unsigned char revbuff[512];
+        long msg_type;
+        unsigned char revbuff[512];
     };
     struct msgstru revs;
     static int msgid,ret_value;
     static int first_in=1,MSGKEY=0x1100;
-//    static QPushButton *bt[9]={ui->pushButton_param1,ui->pushButton_param1_2,ui->pushButton_param1_3,
-//                       ui->pushButton_param1_4,ui->pushButton_param1_5,ui->pushButton_param1_6,
-//                       ui->pushButton_param1_7,ui->pushButton_param1_8,ui->pushButton_param1_9};
     static unsigned int forcus=4,exit_n=0;
     int key=0;
     if(first_in)
@@ -103,7 +100,7 @@ void MainWindow::keyEvent(void)
             key=revs.revbuff[0];
         }else
         {
-           key=0;
+            key=0;
         }
     }
     switch(key)
@@ -179,9 +176,9 @@ void MainWindow::setupRealtimeData_show1(QCustomPlot *customPlot)
     customPlot->graph(0)->setPen(pen);
 
     //set some pens, brushes and backgrounds:
-     customPlot->yAxis->setBasePen(QPen(Qt::white,1));
+    customPlot->yAxis->setBasePen(QPen(Qt::white,1));
 
-     customPlot->yAxis->setTickPen(QPen(Qt::white, 1));
+    customPlot->yAxis->setTickPen(QPen(Qt::white, 1));
     customPlot->yAxis->setSubTickPen(QPen(Qt::white, 1));
     customPlot->yAxis->setTickLabelColor(Qt::white);
 
@@ -193,17 +190,6 @@ void MainWindow::setupRealtimeData_show1(QCustomPlot *customPlot)
     customPlot->setBackground(QColor(10, 10, 10));
     customPlot->xAxis->setTicks(0);
     customPlot->axisRect()->setupFullAxesBox();
-
-/*
-    QSharedPointer<QCPAxisTickerTime> timeTicker(new QCPAxisTickerTime);
-
-    timeTicker->setTimeFormat("%s s");
-    customPlot->axisRect()->setupFullAxesBox();
-    customPlot->yAxis->setRange(-1000, 1000);
-/*/
-    // make left and bottom axes transfer their ranges to right and top axes:
-    //connect(customPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), customPlot->xAxis2, SLOT(setRange(QCPRange)));
-    //connect(customPlot->yAxis, SIGNAL(rangeChanged(QCPRange)), customPlot->yAxis2, SLOT(setRange(QCPRange)));
-}
+  }
 
 

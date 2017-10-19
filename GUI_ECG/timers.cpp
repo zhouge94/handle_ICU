@@ -154,6 +154,9 @@ void MainWindow::realtimeDataSlot_show1()
                     ecg3Tracer->setGraphKey(vector_ecgkey.last());
                 }
                 lastPointKey = key;
+                ui->plot_ecg1->graph(0)->rescaleValueAxis(true,false);
+                ui->plot_ecg2->graph(0)->rescaleValueAxis(true,false);
+                ui->plot_ecg3->graph(0)->rescaleValueAxis(true,false);
                 ui->plot_ecg1->replot();
                 ui->plot_ecg2->replot();
                 ui->plot_ecg3->replot();

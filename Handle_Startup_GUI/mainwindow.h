@@ -26,11 +26,13 @@ private slots:
     void on_pushButton_2_clicked();
     void syscmd();
     void timercallback1();
+    void GetStringEvent();
 private:
     Ui::MainWindow *ui;
     void InitWinParam();
     QVector<QString> cmd_v;
     QVector<QString> fifo_name;
+    QVector<int> chx;
 };
 
 #endif // MAINWINDOW_H

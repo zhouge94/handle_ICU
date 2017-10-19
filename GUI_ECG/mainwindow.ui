@@ -363,7 +363,7 @@ color: rgb(255, 255, 0);</string>
                       <property name="font">
                        <font>
                         <family>Ubuntu</family>
-                        <pointsize>40</pointsize>
+                        <pointsize>35</pointsize>
                         <weight>50</weight>
                         <italic>false</italic>
                         <bold>false</bold>
@@ -474,7 +474,7 @@ color: rgb(255, 255, 0);</string>
                       <property name="font">
                        <font>
                         <family>Ubuntu</family>
-                        <pointsize>40</pointsize>
+                        <pointsize>35</pointsize>
                         <weight>50</weight>
                         <italic>false</italic>
                         <bold>false</bold>

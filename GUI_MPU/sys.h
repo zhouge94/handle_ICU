@@ -11,8 +11,9 @@
 typedef struct
 {
     bool IsBeginRecode;
-    float ssxl;
+    float ydqd;
     float pjxl;
+    float ax,ay,az;
 
     double alltime;
     QList<double> common_t;
